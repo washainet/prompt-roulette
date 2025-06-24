@@ -3,16 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Washington AI Network Prompt Roulette</title>
+  <title>Virtual Prompt Roulette</title>
   <style>
+    /* Flexbox setup for the entire page */
     body {
       display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
+      justify-content: center; /* Horizontally center */
+      align-items: center;     /* Vertically center */
+      height: 100vh;           /* Full screen height */
+      margin: 0;               /* Remove default margin */
       font-family: Arial, sans-serif;
-      text-align: center;
+      background-color: #f0f0f0; /* Optional: Add background color */
+    }
+
+    /* Wrapper to group the elements */
+    .container {
+      text-align: center; /* Center text */
     }
 
     #wheel {
@@ -23,7 +29,7 @@
       position: relative;
       cursor: pointer;
       transition: transform 3s ease-out;
-      z-index: 10;
+      margin: 0 auto; /* Center the wheel */
     }
 
     #spinButton {
@@ -38,12 +44,16 @@
     }
 
     .spinning {
-      transform: rotate(360deg);
+      transform: rotate(360deg); /* Animation for spinning */
+    }
+
+    #result {
+      margin-top: 30px;
     }
   </style>
 </head>
 <body>
-  <div>
+  <div class="container">
     <h1>Virtual Prompt Roulette</h1>
     <div id="wheel">Click to Spin!</div>
     <button id="spinButton" onclick="spinWheel()">Spin the Wheel</button>
