@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Washington AI Network Prompt Roulette</title>
+  <title>Virtual Prompt Roulette</title>
   <style>
     body {
       display: flex;
@@ -19,34 +19,15 @@
       text-align: center;
     }
 
-    #wheel-container {
-      position: relative;
-      width: 400px;
-      height: 400px;
-      margin-top: 20px;
-    }
-
     #wheel {
-      width: 100%;
-      height: 100%;
+      width: 300px;
+      height: 300px;
       border-radius: 50%;
-      background: conic-gradient(#f00 0%, #f00 25%, #00f 25%, #00f 50%, #0f0 50%, #0f0 75%, #ff0 75%, #ff0 100%);
-      transform-origin: center;
-      transition: transform 4s ease-out;
+      background: conic-gradient(#f00, #00f);
       position: relative;
-    }
-
-    #needle {
-      position: absolute;
-      top: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border-left: 10px solid transparent;
-      border-right: 10px solid transparent;
-      border-bottom: 20px solid black;
-      z-index: 1;
+      cursor: pointer;
+      transition: transform 3s ease-out;
+      margin: 0 auto;
     }
 
     #spinButton {
@@ -60,21 +41,19 @@
       cursor: pointer;
     }
 
+    .spinning {
+      transform: rotate(360deg);
+    }
+
     #result {
       margin-top: 30px;
     }
-
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Wheel of Fortune Prompt Roulette</h1>
-
-    <div id="wheel-container">
-      <div id="wheel"></div>
-      <div id="needle"></div>
-    </div>
-
+    <h1>Virtual Prompt Roulette</h1>
+    <div id="wheel">Click to Spin!</div>
     <button id="spinButton" onclick="spinWheel()">Spin the Wheel</button>
 
     <div id="result">
@@ -84,13 +63,65 @@
   </div>
 
   <script>
-    // Categories and Prompts
-    const categories = [
-      "AI Pickup Lines", 
-      "Pirate Startup Pitches", 
-      "Shakespearean Monologues", 
-      "Future Tech Ideas"
-    ];
+    let categories = [];
+    let prompts = {};
 
-    const prompts = {
-      "AI Pickup Lines": [
+    // Function to fetch prompts and categories from ChatGPT API
+    async function fetchPrompts() {
+      const apiKey = "your-api-key-here"; // Replace with your OpenAI API key
+
+      const response = await fetch('https://api.openai.com/v1/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: "gpt-3.5-turbo", // Use the ChatGPT model
+          messages: [{ role: "user", content: "Give me a list of four creative categories with 3 prompts each for a virtual prompt roulette game." }],
+          max_tokens: 150,
+        })
+      });
+
+      const data = await response.json();
+      const content = data.choices[0].message.content;
+
+      // Parse response into categories and prompts
+      parsePrompts(content);
+    }
+
+    // Parse the response content into categories and prompts
+    function parsePrompts(content) {
+      const categoriesAndPrompts = content.split("\n").filter(line => line.trim() !== "");
+
+      categoriesAndPrompts.forEach(line => {
+        const [category, ...promptList] = line.split(":");
+        const promptsList = promptList.join(":").split(";").map(prompt => prompt.trim());
+
+        categories.push(category);
+        prompts[category] = promptsList;
+      });
+    }
+
+    function spinWheel() {
+      const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+      const randomPrompt = prompts[randomCategory][Math.floor(Math.random() * prompts[randomCategory].length)];
+
+      // Update category and prompt in the UI
+      document.getElementById("category").textContent = randomCategory;
+      document.getElementById("prompt").textContent = randomPrompt;
+
+      // Add spinning effect
+      const wheel = document.getElementById("wheel");
+      wheel.classList.add("spinning");
+
+      // After animation, remove the spinning class (reset rotation)
+      setTimeout(() => wheel.classList.remove("spinning"), 3000);
+    }
+
+    // Fetch prompts when the page loads
+    window.onload = fetchPrompts;
+
+  </script>
+</body>
+</html>
