@@ -3,33 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Virtual Prompt Roulette</title>
+  <title>Wheel of Fortune Prompt Roulette</title>
   <style>
-    /* Flexbox setup for the entire page */
     body {
       display: flex;
-      justify-content: center; /* Horizontally center */
-      align-items: center;     /* Vertically center */
-      height: 100vh;           /* Full screen height */
-      margin: 0;               /* Remove default margin */
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #f0f0f0; /* Optional: Add background color */
+      background-color: #f0f0f0;
     }
 
-    /* Wrapper to group the elements */
     .container {
-      text-align: center; /* Center text */
+      text-align: center;
+    }
+
+    #wheel-container {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      margin-top: 20px;
     }
 
     #wheel {
-      width: 300px;
-      height: 300px;
+      width: 100%;
+      height: 100%;
       border-radius: 50%;
-      background: conic-gradient(#f00, #00f);
+      background: conic-gradient(#f00 0%, #f00 25%, #00f 25%, #00f 50%, #0f0 50%, #0f0 75%, #ff0 75%, #ff0 100%);
+      transform-origin: center;
+      transition: transform 4s ease-out;
       position: relative;
-      cursor: pointer;
-      transition: transform 3s ease-out;
-      margin: 0 auto; /* Center the wheel */
+    }
+
+    #needle {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 20px solid black;
+      z-index: 1;
     }
 
     #spinButton {
@@ -43,19 +60,21 @@
       cursor: pointer;
     }
 
-    .spinning {
-      transform: rotate(360deg); /* Animation for spinning */
-    }
-
     #result {
       margin-top: 30px;
     }
+
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Virtual Prompt Roulette</h1>
-    <div id="wheel">Click to Spin!</div>
+    <h1>Wheel of Fortune Prompt Roulette</h1>
+
+    <div id="wheel-container">
+      <div id="wheel"></div>
+      <div id="needle"></div>
+    </div>
+
     <button id="spinButton" onclick="spinWheel()">Spin the Wheel</button>
 
     <div id="result">
@@ -65,28 +84,13 @@
   </div>
 
   <script>
-    const categories = ["AI Pickup Lines", "Pirate Startup Pitches", "Shakespearean Monologues", "Future Tech Ideas"];
+    // Categories and Prompts
+    const categories = [
+      "AI Pickup Lines", 
+      "Pirate Startup Pitches", 
+      "Shakespearean Monologues", 
+      "Future Tech Ideas"
+    ];
+
     const prompts = {
-      "AI Pickup Lines": ["Write a cheesy AI pickup line", "Create a robot romance poem", "Explain AI as a dating app"],
-      "Pirate Startup Pitches": ["Pitch a startup idea as a pirate", "Describe a pirate app for finding treasure", "Create a crowdfunding campaign for pirate robots"],
-      "Shakespearean Monologues": ["Speak like Shakespeare about AI", "Write a sonnet about coding", "Describe AI from the perspective of Hamlet"],
-      "Future Tech Ideas": ["Imagine the weirdest AI-powered gadget", "Describe life with AI-driven pizza delivery", "Pitch a future AI-based travel service"],
-    };
-
-    function spinWheel() {
-      // Add spinning effect
-      const wheel = document.getElementById("wheel");
-      wheel.classList.add("spinning");
-
-      // After animation, remove the spinning class (reset rotation)
-      setTimeout(() => wheel.classList.remove("spinning"), 3000);
-
-      // Update category and prompt
-      const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-      const randomPrompt = prompts[randomCategory][Math.floor(Math.random() * prompts[randomCategory].length)];
-      document.getElementById("category").textContent = randomCategory;
-      document.getElementById("prompt").textContent = randomPrompt;
-    }
-  </script>
-</body>
-</html>
+      "AI Pickup Lines": [
