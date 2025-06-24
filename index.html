@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Washington AI Network Prompt Roulette</title>
+  <title>Virtual Prompt Roulette</title>
   <style>
     body {
       display: flex;
@@ -27,7 +27,7 @@
       position: relative;
       cursor: pointer;
       margin: 0 auto;
-      transition: transform 4s ease-out;
+      transition: transform 2s ease-out; /* Faster spin, 2 seconds */
     }
 
     #spinButton {
@@ -200,10 +200,10 @@
     let currentRotation = 0;
 
     function spinWheel() {
-      // Spin the wheel
+      // Spin the wheel once clockwise
       let randomDegree = Math.floor(Math.random() * 360) + 3600; // Spin at least 10 full rotations
-      let spinDuration = 4000; // 4 seconds to complete the rotation
-      
+      let spinDuration = 2000; // 2 seconds to complete the rotation
+
       document.getElementById('wheel').style.transition = `transform ${spinDuration}ms ease-out`;
       document.getElementById('wheel').style.transform = `rotate(${randomDegree}deg)`;
 
@@ -215,7 +215,7 @@
 
         document.getElementById('category').innerText = category;
         document.getElementById('prompt').innerText = prompt;
-      }, spinDuration);
+      }, spinDuration); // Wait for the spin to finish before updating the result
     }
   </script>
 </body>
