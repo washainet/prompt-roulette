@@ -23,10 +23,9 @@
       width: 300px;
       height: 300px;
       border-radius: 50%;
-      background: conic-gradient(#f00, #00f);
+      background: conic-gradient(#f00, #00f, #0f0, #ff0, #f0f, #00f, #f00);
       position: relative;
       cursor: pointer;
-      transition: transform 3s ease-out;
       margin: 0 auto;
     }
 
@@ -41,19 +40,24 @@
       cursor: pointer;
     }
 
-    .spinning {
-      transform: rotate(360deg);
-    }
-
     #result {
       margin-top: 30px;
+    }
+
+    #category {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    #prompt {
+      font-size: 16px;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Virtual Prompt Roulette</h1>
-    <div id="wheel">Click to Spin!</div>
+    <div id="wheel" onclick="spinWheel()">Click to Spin!</div>
     <button id="spinButton" onclick="spinWheel()">Spin the Wheel</button>
 
     <div id="result">
@@ -63,65 +67,37 @@
   </div>
 
   <script>
-    let categories = [];
-    let prompts = {};
+    const categories = [
+      "Government & Politics", "Media & Entertainment", "Business & Entrepreneurship", "Technology & Innovation", 
+      "Jobs & Careers", "Hobbies & Interests", "Education & Learning", "Health & Wellness", 
+      "Sports", "Travel & Adventure"
+    ];
 
-    // Function to fetch prompts and categories from ChatGPT API
-    async function fetchPrompts() {
-      const apiKey = "your-api-key-here"; // Replace with your OpenAI API key
-
-      const response = await fetch('https://api.openai.com/v1/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
-        },
-        body: JSON.stringify({
-          model: "gpt-3.5-turbo", // Use the ChatGPT model
-          messages: [{ role: "user", content: "Give me a list of four creative categories with 3 prompts each for a virtual prompt roulette game." }],
-          max_tokens: 150,
-        })
-      });
-
-      const data = await response.json();
-      const content = data.choices[0].message.content;
-
-      // Parse response into categories and prompts
-      parsePrompts(content);
-    }
-
-    // Parse the response content into categories and prompts
-    function parsePrompts(content) {
-      const categoriesAndPrompts = content.split("\n").filter(line => line.trim() !== "");
-
-      categoriesAndPrompts.forEach(line => {
-        const [category, ...promptList] = line.split(":");
-        const promptsList = promptList.join(":").split(";").map(prompt => prompt.trim());
-
-        categories.push(category);
-        prompts[category] = promptsList;
-      });
-    }
-
-    function spinWheel() {
-      const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-      const randomPrompt = prompts[randomCategory][Math.floor(Math.random() * prompts[randomCategory].length)];
-
-      // Update category and prompt in the UI
-      document.getElementById("category").textContent = randomCategory;
-      document.getElementById("prompt").textContent = randomPrompt;
-
-      // Add spinning effect
-      const wheel = document.getElementById("wheel");
-      wheel.classList.add("spinning");
-
-      // After animation, remove the spinning class (reset rotation)
-      setTimeout(() => wheel.classList.remove("spinning"), 3000);
-    }
-
-    // Fetch prompts when the page loads
-    window.onload = fetchPrompts;
-
-  </script>
-</body>
-</html>
+    const prompts = {
+      "Government & Politics": [
+        "Describe a futuristic political campaign powered by AI.",
+        "Pitch a new law that addresses AI and privacy concerns.",
+        "Create a speech for a politician discussing the impact of automation on jobs.",
+        "Write about a world where AI decides national elections.",
+        "Describe the role of AI in a democratic society.",
+        "Imagine a political debate where all candidates are AI-powered.",
+        "Write a law for regulating AI in the public sector.",
+        "Describe an election where citizens vote using AI-generated ballots.",
+        "What would a politician’s AI assistant do?",
+        "Imagine a government that uses AI to create policies based on real-time data."
+      ],
+      "Media & Entertainment": [
+        "Create a movie plot where AI plays the lead role.",
+        "Describe a TV show where AI characters interact with humans.",
+        "Write a script for a news segment reporting on AI advancements.",
+        "Imagine a music album produced entirely by AI.",
+        "Write a story about an AI creating viral content on social media.",
+        "Create an AI influencer for Instagram or TikTok.",
+        "Pitch an AI-powered reality TV show concept.",
+        "Describe a game where AI controls the storyline based on player choices.",
+        "Write a scene where AI performs a stand-up comedy routine.",
+        "Write about the rise of AI-run news agencies and their impact on journalism."
+      ],
+      "Business & Entrepreneurship": [
+        "Pitch a new startup idea that uses AI to solve a real-world problem.",
+        "Describe an AI-powered business that helps entrepreneurs create better business plans.",
