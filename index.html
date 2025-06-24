@@ -196,3 +196,27 @@
         "Create an AI service that helps travelers learn new languages during their trip."
       ]
     };
+
+    let currentRotation = 0;
+
+    function spinWheel() {
+      // Spin the wheel
+      let randomDegree = Math.floor(Math.random() * 360) + 3600; // Spin at least 10 full rotations
+      let spinDuration = 4000; // 4 seconds to complete the rotation
+      
+      document.getElementById('wheel').style.transition = `transform ${spinDuration}ms ease-out`;
+      document.getElementById('wheel').style.transform = `rotate(${randomDegree}deg)`;
+
+      // Randomly select a category and prompt after the spin
+      setTimeout(() => {
+        const categoryIndex = Math.floor(Math.random() * categories.length);
+        const category = categories[categoryIndex];
+        const prompt = prompts[category][Math.floor(Math.random() * prompts[category].length)];
+
+        document.getElementById('category').innerText = category;
+        document.getElementById('prompt').innerText = prompt;
+      }, spinDuration);
+    }
+  </script>
+</body>
+</html>
