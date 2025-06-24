@@ -5,6 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Virtual Prompt Roulette</title>
   <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
     #wheel {
       width: 300px;
       height: 300px;
@@ -12,12 +22,8 @@
       background: conic-gradient(#f00, #00f);
       position: relative;
       cursor: pointer;
-      transition: transform 3s ease-out; /* Add rotation transition */
-      z-index: 10; /* Ensure it's clickable */
-    }
-
-    .spinning {
-      transform: rotate(360deg); /* Rotate the wheel */
+      transition: transform 3s ease-out;
+      z-index: 10;
     }
 
     #spinButton {
@@ -30,16 +36,22 @@
       border-radius: 5px;
       cursor: pointer;
     }
+
+    .spinning {
+      transform: rotate(360deg);
+    }
   </style>
 </head>
 <body>
-  <h1>Virtual Prompt Roulette</h1>
-  <div id="wheel">Click to Spin!</div> <!-- Removed duplicate onclick -->
-  <button id="spinButton" onclick="spinWheel()">Spin the Wheel</button>
- 
-  <div id="result">
-    <h2>Category: <span id="category">--</span></h2>
-    <p>Prompt: <span id="prompt">--</span></p>
+  <div>
+    <h1>Virtual Prompt Roulette</h1>
+    <div id="wheel">Click to Spin!</div>
+    <button id="spinButton" onclick="spinWheel()">Spin the Wheel</button>
+
+    <div id="result">
+      <h2>Category: <span id="category">--</span></h2>
+      <p>Prompt: <span id="prompt">--</span></p>
+    </div>
   </div>
 
   <script>
