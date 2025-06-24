@@ -27,7 +27,7 @@
       position: relative;
       cursor: pointer;
       margin: 0 auto;
-      transition: transform 2s ease-out; /* 2 seconds for each spin */
+      transition: transform 1s ease-out; /* 1 second for each spin */
     }
 
     #spinButton {
@@ -200,12 +200,14 @@
     let currentRotation = 0;
 
     function spinWheel() {
-      // Spin the wheel once clockwise
+      // Spin the wheel once clockwise at a fast speed
       let randomDegree = Math.floor(Math.random() * 360) + 3600; // Spin at least 10 full rotations
-      let spinDuration = 2000; // 2 seconds to complete the rotation
+      let spinDuration = 1000; // 1 second for each spin
 
+      // Ensure the wheel spins only clockwise, remove any negative or random rotation
+      currentRotation += randomDegree;
       document.getElementById('wheel').style.transition = `transform ${spinDuration}ms ease-out`;
-      document.getElementById('wheel').style.transform = `rotate(${randomDegree}deg)`;
+      document.getElementById('wheel').style.transform = `rotate(${currentRotation}deg)`; // Always add to current rotation to keep it going
 
       // Randomly select a category and prompt after the spin
       setTimeout(() => {
